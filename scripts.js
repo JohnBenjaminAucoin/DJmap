@@ -112,7 +112,6 @@ async function getAudioFeatures(playlist , callback) {
 }
 
 function buttonClick(){
-    getAuth();
     getPlaylist(isolatePlaylistID(inputE.value), getAudioFeatures); 
 }
 
