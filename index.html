@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Network Graph</title>
+    <style>
+      html, body, #container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+      <link rel="stylesheet" href="styles.css">
+
+<script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-graph.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-data-adapter.min.js"></script>  
+</head>
+  <body>
+    <input id="playlistInput" type="text"></input>
+    <input type="button" value="Generate" onclick="buttonClick()"></input> <br>
+
+    <div id="container"></div>
+    <script src="scripts.js">
+      // The chart code goes here.
+    </script>
+  </body>
+</html>
