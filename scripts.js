@@ -115,7 +115,9 @@ function buttonClick(){
     getPlaylist(isolatePlaylistID(inputE.value), getAudioFeatures); 
 }
 
-
+function exampleClick(){
+    getPlaylist(isolatePlaylistID("https://open.spotify.com/playlist/4D8FCQ7dWIZScfIl3lJwoT?si=12ff70890ee949fe"), getAudioFeatures);
+}
 
 
 
