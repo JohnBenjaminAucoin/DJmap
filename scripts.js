@@ -154,29 +154,49 @@ async function createChart(playlist, audio_features) {
         0 : "Minor"
     }
     let keylookup ={
-        1:"C",
-        2:"C#",
-        3:"D",
-        4:"D#",
-        5:"E",
-        6:"F",
-        7:"F#",
-        8:"G",
-        9:"G#",
-        10:"A",
-        11:"A#",
-        12:"B",
+        0:"C",
+        1:"C#",
+        2:"D",
+        3:"D#",
+        4:"E",
+        5:"F",
+        6:"F#",
+        7:"G",
+        8:"G#",
+        9:"A",
+        10:"A#",
+        11:"B",
     }
+        //ToCamelot[key][mode]
+    let ToCamelot = [
+        ["5A","8B"], //0  C
+        ["12A","3B"], //1 C#
+        ["7A","10B"], //2 D
 
+        ["2A","5B"], //3 D#
+        ["9A","12B"], //4 E
+        ["4A","7B"], //5 F
+             
+        ["11A","2B"], //6 F#
+        ["6A","9B"], //7 G
+        ["1A","4B"], //8  G#
+        
+        ["8A","11B"], //9  A
+        ["3A","6B"], //10 A#
+        ["10A","1B"]  //11 B
+    ]
+
+    
 
     //create nodes
     console.log(await playlist);
     for (let songN in playlist) {
         chartData.nodes.push({
             id: `${playlist[songN].track.name}`,
-            key: parseInt(audio_features[songN].key) +1,
-            keyLetter: keylookup[parseInt(audio_features[songN].key) +1],
+            key: parseInt(audio_features[songN].key),
+            keyLetter: keylookup[parseInt(audio_features[songN].key) ],
             mode: modelookup[parseInt(audio_features[songN].mode)],
+            camelot: ToCamelot[parseInt(audio_features[songN].key)][parseInt(audio_features[songN].mode)],
             bpm: Math.round(audio_features[songN].tempo),
             fill: {src: playlist[songN].track.album.images[0].url},
             height: 40
@@ -191,7 +211,10 @@ async function createChart(playlist, audio_features) {
             let flag = false;
             let type;
             let thickness;
-            let keyDelta = Math.abs(chartData.nodes[i].key - chartData.nodes[j].key);
+            let fromKey = parseInt(chartData.nodes[i].camelot);
+            let toKey = parseInt(chartData.nodes[j].camelot);
+
+            let keyDelta = Math.abs(fromKey - toKey);
             let sameMode = chartData.nodes[i].mode == chartData.nodes[j].mode;
             let bpmDelta = Math.abs(chartData.nodes[i].bpm - chartData.nodes[j].bpm);
             if(keyDelta == 0 && sameMode){
@@ -233,6 +256,8 @@ async function createChart(playlist, audio_features) {
         
     }
    // https://coolors.co/ff2ecc-a51080-3b0230-eef0f2-202124
+   // https://coolors.co/15e25c-fcff48-51baf3-eeeff0-666666
+   // https://coolors.co/18e15a-fbff48-52bbf5-666666-0a191f-ebebeb
     var chart = anychart.graph(chartData);
     chart.background().fill("#202124");
     chart.nodes().tooltip().useHtml(true);
@@ -244,7 +269,7 @@ async function createChart(playlist, audio_features) {
 
 
 chart.nodes().tooltip().format(
-  `<span style='font-weight:bold'>{%id}</span><br> {%keyLetter} {%mode} {%bpm} bpm`
+  `<span style='font-weight:bold'>{%id}</span><br> {%keyLetter} {%mode} / {%camelot} {%bpm} bpm`
 );
      chart.edges().tooltip().format("{%mixtype} \n {%bpmDif} bpm appart");
     // set the title
